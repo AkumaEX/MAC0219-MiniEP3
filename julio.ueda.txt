@@ -1,0 +1,135 @@
+Nome: JULIO KENJI UEDA NUSP: 9298281
+
+Mini Exercício Programa: Contenção
+
+
+1.ENTENDENDO O QUE O CÓDIGO FAZ
+	
+	O script 'contention.sh' cria e roda um código em 'C' com número de 'IF's (onde este varia a cada 
+	iteração) antes da seção crítica, iniciando com zero (nenhum 'IF' antes da seção crítica) até nove 
+	(nove 'IF's antes da seção crítica), onde 'IF' é uma contenção definida no início do código.
+	
+	Dois parâmetros devem ser fornecidos pelo usuário, onde estes parâmetros rodam com cada programa em 
+	C criado pelo script:
+		- <vector_size> é o tamanho de um vetor de números inteiros aleatórios;
+		- <number_of_threads> é o número de threads criado pela API OpenMP para executar o trabalho.
+
+	O programa em C imprime o tempo médio necessário para descobrir o maior número inteiro do vetor de 
+	números aleatórios de tamanho <vector_size> utilizando <number_of_threads> threads.
+
+	O script imprime os resultados de cada programa em C com contenções variando de 0 a 9.
+
+	O objetivo e verificar o impacto de tempo causado pelo número de contenções, tamanho do vetor e 
+	número de threads.
+
+
+2.PROCEDIMENTO, ANÁLISE E RESULTADOS
+
+	Para vetores de tamanho 1000 (pequeno), 50000 (médio) e 100000 (grande) foram realizados testes com
+	o número de threads variando de 1 (sequencial) a 4 (multithread) para verificar o comportamento do
+	programa e sua performance para executar seu trabalho. 
+
+	De forma geral, houve um grande impacto na performance ao utilizar ou não a contenção, seguida do 
+	uso de paralelismo. Portanto, a média, o desvio padrão e o intervalo de confiança sobre um mesmo 
+	número de thread (parte de baixo da tabela) foram calculados excluindo o valor do processo sem o uso
+	de contenção. Deste modo é possível verificar se o aumento do número de contenções impacta no 
+	desempenho do programa. Os cálculos de média, desvio padrão e intervalo de confiança do lado direito
+	da tabela servem para verificar se o uso de mais paralelismo impacta no desempenho do programa sobre
+	um mesmo número de contenções.
+
+	Abreviações na tabela:
+
+	- if 	: número de contenções antes da região crítica (0 = sem contenções)
+	- th 	: número de threads (paralelismo)
+	- std	: desvio padrão
+	- mean 	: média
+	- min 	: intervalo de confiança mínimo
+	- max	: intervalo de confiança máximo 
+
+
+VETOR DE TAMANHO 1000
+--------------------------------------------------------------------------------------------------------
+if  |th	1			2			3			4			|	std			mean		min			max
+--------------------------------------------------------------------------------------------------------
+0	|	0.000023	0.000162	0.000506	0.000111	|	0.000212	0.000201	0.000062	0.000339
+--------------------------------------------------------------------------------------------------------
+1	|	0.000004	0.000004	0.000003	0.000004	|	0.000001	0.000004	0.000003	0.000004
+2	|	0.000004	0.000003	0.000004	0.000005	|	0.000001	0.000004	0.000003	0.000005
+3	|	0.000004	0.000004	0.000004	0.000004	|	0.000000	0.000004	--------	--------
+4	|	0.000004	0.000004	0.000004	0.000008	|	0.000002	0.000005	0.000004	0.000006
+5	|	0.000004	0.000003	0.000004	0.000006	|	0.000001	0.000004	0.000003	0.000005
+6	|	0.000004	0.000003	0.000004	0.000005	|	0.000001	0.000004	0.000003	0.000005
+7	|	0.000004	0.000004	0.000004	0.000005	|	0.000001	0.000004	0.000004	0.000005
+8	|	0.000004	0.000004	0.000004	0.000006	|	0.000001	0.000005	0.000004	0.000005
+9	|	0.000004	0.000003	0.000003	0.000005	|	0.000001	0.000004	0.000003	0.000004
+--------------------------------------------------------------------------------------------------------
+std	|	0.000000	0.000001	0.000000	0.000001	|	Queda de performance ao utilizar 
+--------------------------------------------------------|	multithreading em um sistema sem contenção.
+mean|	0.000004	0.000004	0.000004	0.000005	|	
+--------------------------------------------------------|	Sem diferença de performance ao utilizar
+min	|	--------	0.000003	0.000003	0.000005	|	multithreading em um sistema com contenção.
+--------------------------------------------------------|	
+max	|	--------	0.000004	0.000004	0.000006	|	Ganho de performance com até 1 contenção.
+--------------------------------------------------------|
+
+
+VETOR DE TAMANHO 50000
+--------------------------------------------------------------------------------------------------------
+if 	|th	1			2			3			4			|	std			mean		min			max
+--------------------------------------------------------------------------------------------------------
+0	|	0.001087	0.005592	0.007178	0.008479	|	0.003222	0.005584	0.003479	0.007689
+--------------------------------------------------------------------------------------------------------
+1	|	0.000157	0.000075	0.000174	0.000118	|	0.000044	0.000131	0.000102	0.000160
+2	|	0.000194	0.000075	0.000078	0.000068	|	0.000060	0.000104	0.000064	0.000143
+3	|	0.000147	0.000075	0.000073	0.000060	|	0.000039	0.000089	0.000063	0.000114
+4	|	0.000156	0.000075	0.000078	0.000107	|	0.000038	0.000104	0.000079	0.000129
+5	|	0.000151	0.000078	0.000075	0.000063	|	0.000040	0.000092	0.000066	0.000118
+6	|	0.000153	0.000075	0.000077	0.000059	|	0.000042	0.000091	0.000063	0.000119
+7	|	0.000146	0.000077	0.000077	0.000060	|	0.000038	0.000090	0.000065	0.000115
+8	|	0.000146	0.000075	0.000078	0.000069	|	0.000036	0.000092	0.000068	0.000116
+9	|	0.000149	0.000085	0.000084	0.000059	|	0.000038	0.000094	0.000069	0.000119
+--------------------------------------------------------------------------------------------------------
+std	|	0.000015	0.000003	0.000032	0.000022	|	Queda de performance com multithreading em
+--------------------------------------------------------|	um sistema sem contenção.
+mean|	0.000155	0.000077	0.000088	0.000074	|	
+--------------------------------------------------------|	Ganho de performance com multithreading em
+min |	0.000146	0.000074	0.000067	0.000059	|	um sistema com contenção.
+--------------------------------------------------------|				
+max	|	0.000165	0.000079	0.000109	0.000088	|	Ganho de performance com até 2 contenções.
+--------------------------------------------------------|
+
+
+VETOR DE TAMANHO 100000
+--------------------------------------------------------------------------------------------------------
+if 	|th 1			2			3			4			|	std			mean		min			max
+--------------------------------------------------------------------------------------------------------
+0	|	0.002174	0.011523	0.011508	0.015982	|	0.005810	0.010297	0.006501	0.014093
+--------------------------------------------------------------------------------------------------------
+1	|	0.000292	0.000171	0.000202	0.000404	|	0.000105	0.000267	0.000199	0.000336
+2	|	0.000291	0.000151	0.000145	0.000345	|	0.000101	0.000233	0.000167	0.000299
+3	|	0.000270	0.000148	0.000153	0.000116	|	0.000068	0.000172	0.000128	0.000216
+4	|	0.000308	0.000167	0.000139	0.000116	|	0.000086	0.000183	0.000126	0.000239
+5	|	0.000298	0.000168	0.000157	0.000118	|	0.000078	0.000185	0.000134	0.000236
+6	|	0.000291	0.000150	0.000209	0.000144	|	0.000068	0.000199	0.000154	0.000243
+7	|	0.000300	0.000148	0.000155	0.000121	|	0.000081	0.000181	0.000128	0.000234
+8	|	0.000293	0.000148	0.000148	0.000135	|	0.000075	0.000181	0.000132	0.000230
+9	|	0.000291	0.000151	0.000154	0.000119	|	0.000076	0.000179	0.000129	0.000229
+--------------------------------------------------------------------------------------------------------
+std	|	0.000010	0.000010	0.000025	0.000112	|	Queda de performance com multithreading em
+--------------------------------------------------------|	um sistema sem contenção.
+mean|	0.000293	0.000156	0.000162	0.000180	|
+--------------------------------------------------------|	Ganho de performance com multithreading em
+min	|	0.000286	0.000149	0.000146	0.000107	|	um sistema com contenção.
+--------------------------------------------------------|				
+max	|	0.000299	0.000162	0.000179	0.000253	|	Ganho de performance com até 3 contenções.
+--------------------------------------------------------|
+
+
+3.CONCLUSÕES
+
+	Ao analisar as três tabelas, é possível concluir que:
+
+	- Há ganho de performance ao utilizar contenção com ou sem multithreading.
+	- Há ganho de performance ao utilizar multithreading com contenção.
+	- Há perda de performance ao utilizar multithreading sem contenção.
+	- Há ganho de performance ao utlizar mais de uma contenção em vetores grandes.
